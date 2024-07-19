@@ -3,7 +3,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 
 // Import the generated route tree
-import { CartContextProvider } from './CartContext'
+import { CartContextProvider, QueryProvider } from './Providers'
 import { routeTree } from './routeTree.gen'
 
 // Create a new router instance
@@ -23,7 +23,9 @@ if (!rootElement.innerHTML) {
 	root.render(
 		<StrictMode>
 			<CartContextProvider>
-				<RouterProvider router={router} />
+				<QueryProvider>
+					<RouterProvider router={router} />
+				</QueryProvider>
 			</CartContextProvider>
 		</StrictMode>
 	)
