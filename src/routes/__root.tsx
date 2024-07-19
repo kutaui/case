@@ -10,6 +10,8 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
+import AccountIcon from '@/AccountIcon'
+import WalletIcon from '@/WalletIcon'
 
 export const Route = createRootRoute({
 	component: Root,
@@ -21,7 +23,7 @@ function Root() {
 	return (
 		<>
 			<header className="p-4 bg-blue-600">
-				<div className="flex max-w-[1440px] justify-between items-center mx-auto gap-8">
+				<div className="flex max-w-[1440px] justify-between items-center mx-auto gap-3 xs:gap-8">
 					<div className="flex justify-between items-center w-[800px] gap-8">
 						<Link to="/" className="font-bold text-white  sm:text-3xl">
 							Eteration
@@ -59,8 +61,31 @@ function Root() {
 					</div>
 					<div>
 						<div className="flex gap-4">
-							<p className="text-white">117.885</p>
-							<p className="text-white">Kerem</p>
+							<div className=" items-center gap-1 xs:flex hidden">
+								<WalletIcon className="text-white w-5 h-5" />
+								<p className="text-white ">117.885</p>
+							</div>
+
+							{/* Mobile Cart */}
+							<Popover>
+								<PopoverTrigger className="text-white xs:hidden block">
+									<div className="flex items-center gap-1">
+										<WalletIcon className="text-white w-5 h-5" />
+										<p className="text-white ">200.885</p>
+									</div>
+								</PopoverTrigger>
+								<PopoverContent>
+									<div className="relative w-full max-w-sm">
+										there will be cartt
+									</div>
+								</PopoverContent>
+							</Popover>
+							{/* Mobile Cart */}
+
+							<div className="flex items-center gap-1">
+								<AccountIcon className="text-white w-5 h-5" />
+								<p className="text-white">Kerem</p>
+							</div>
 						</div>
 					</div>
 				</div>
