@@ -1,16 +1,16 @@
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { Toaster } from '@/components/ui/toaster'
+import {
+	createRouter,
+	RouterProvider
+} from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-
-// Import the generated route tree
 import { CartContextProvider, QueryProvider } from './components/Providers'
 import { routeTree } from './routeTree.gen'
-import { Toaster } from '@/components/ui/toaster'
 
-// Create a new router instance
-const router = createRouter({ routeTree })
-
-// Register the router instance for type safety
+const router = createRouter({
+	routeTree,
+})
 declare module '@tanstack/react-router' {
 	interface Register {
 		router: typeof router

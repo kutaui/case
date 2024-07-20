@@ -26,3 +26,10 @@ export interface Context {
 	toggleCartItemQuantity: (id: number, value: 'inc' | 'dec') => void
 	onRemove: (product: Product) => void
 }
+
+export interface SearchParams {
+	brands?: string
+	models?: string
+	order?: string
+	search?: string
+}

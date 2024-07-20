@@ -2,8 +2,6 @@ import { GetProductQuery } from '@/api/controllers'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/products/$productId')({
-	// In a loader
-	// Or in a component
 	component: PostComponent,
 })
 
