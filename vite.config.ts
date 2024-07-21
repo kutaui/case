@@ -1,4 +1,7 @@
 // vite.config.ts
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
+
 import { defineConfig } from 'vite'
 import viteReact from '@vitejs/plugin-react'
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
@@ -15,5 +18,10 @@ export default defineConfig({
 		alias: {
 			'@': path.resolve(__dirname, './src'),
 		},
+	},
+	test: {
+		globals: true,
+		environment: 'jsdom',
+		setupFiles: './src/tests/setup.ts',
 	},
 })

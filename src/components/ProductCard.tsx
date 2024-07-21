@@ -15,7 +15,7 @@ export function ProductCard({ product }: { product: Product }) {
 	}
 
 	return (
-		<Link to={`/products/${product.id}`}>
+		<a href={`/products/${product.id}`}>
 			<Card className="border w-52 max-h-96  ">
 				<CardHeader>
 					<img src={product.image} alt="" className="w-40 h-40" />
@@ -35,6 +35,6 @@ export function ProductCard({ product }: { product: Product }) {
 					</Button>
 				</CardFooter>
 			</Card>
-		</Link>
+		</a>
 	)
 }
