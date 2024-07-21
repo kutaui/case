@@ -1,4 +1,4 @@
-import { Product, CartItem, Context } from '@/types'
+import { Product, CartItem, Context } from '@/lib/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createContext, useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
@@ -7,11 +7,7 @@ const defaultContext: Context = {
 	cartItems: [],
 	setCartItems: () => {},
 	totalPrice: 0,
-	setTotalPrice: () => {},
 	qty: 1,
-	setQty: () => {},
-	incQty: () => {},
-	decQty: () => {},
 	onAdd: () => {},
 	toggleCartItemQuantity: () => {},
 	onRemove: () => {},
@@ -25,16 +21,22 @@ export const CartContextProvider = ({
 	children: React.ReactNode
 }) => {
 	const [cartItems, setCartItems] = useState<CartItem[]>([])
-	const [totalPrice, setTotalPrice] = useState(0)
+	const [totalPrice, setTotalPrice] = useState<number>(0)
 	const [qty, setQty] = useState(1)
 	const { toast } = useToast()
 
 	useEffect(() => {
 		const cartFromLocalStorage = localStorage.getItem('cartItems')
 		if (cartFromLocalStorage) {
-			const { cartItems, totalPrice } = JSON.parse(cartFromLocalStorage)
-			setCartItems(cartItems)
-			setTotalPrice(totalPrice)
+			try {
+				const { cartItems, totalPrice } = JSON.parse(cartFromLocalStorage)
+				if (Array.isArray(cartItems) && cartItems.length > 0) {
+					setCartItems(cartItems)
+					setTotalPrice(Number(totalPrice) || 0)
+				}
+			} catch (error) {
+				console.error('Error parsing cart data from localStorage:', error)
+			}
 		}
 	}, [])
 
@@ -42,90 +44,71 @@ export const CartContextProvider = ({
 		localStorage.setItem('cartItems', JSON.stringify({ cartItems, totalPrice }))
 	}, [cartItems, totalPrice])
 
+	const calculateTotalPrice = (items: CartItem[]) => {
+		return items.reduce((total, item) => total + item.price * item.quantity, 0)
+	}
+
 	const onAdd = (product: Product, quantity: number) => {
 		const checkProductInCart = cartItems.find(
 			(item: CartItem) => item.id === product.id
 		)
-		setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity)
-		setQty(1)
 
+		let updatedCartItems: CartItem[]
 		if (checkProductInCart) {
-			const updatedCartItems = cartItems.map((item) => {
+			updatedCartItems = cartItems.map((item) => {
 				if (item.id === product.id) {
 					return { ...item, quantity: item.quantity + quantity }
 				}
 				return item
 			})
-			setCartItems(updatedCartItems)
 		} else {
 			const newItem: CartItem = { ...product, quantity }
-			setCartItems([...cartItems, newItem])
+			updatedCartItems = [...cartItems, newItem]
 		}
+
+		setCartItems(updatedCartItems)
+		setTotalPrice(calculateTotalPrice(updatedCartItems))
+		setQty(1)
+
 		toast({
 			title: 'Success',
-			description: `${qty} ${product.name} added to the cart.`,
+			description: `${quantity} ${product.name} added to the cart.`,
 		})
 	}
 
 	const onRemove = (product: Product) => {
-		const foundProduct = cartItems.find((item) => item.id === product.id)
-		if (foundProduct) {
-			const newCartItems = cartItems.filter((item) => item.id !== product.id)
-
-			setTotalPrice(
-				(prevTotalPrice) =>
-					prevTotalPrice - foundProduct.price * foundProduct.quantity
-			)
-			setCartItems(newCartItems)
-		}
+		const updatedCartItems = cartItems.filter((item) => item.id !== product.id)
+		setCartItems(updatedCartItems)
+		setTotalPrice(calculateTotalPrice(updatedCartItems))
+		toast({
+			title: 'Success',
+			description: `${product.name} removed from cart.`,
+		})
 	}
 
 	const toggleCartItemQuantity = (id: number, value: 'inc' | 'dec') => {
-		const foundProduct = cartItems.find((item) => item.id === id)
-		if (foundProduct) {
-			if (value === 'inc') {
-				const updatedData = cartItems.map((item) =>
-					item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-				)
-				setCartItems(updatedData)
-				setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price)
-			} else if (value === 'dec') {
-				if (foundProduct.quantity > 1) {
-					const updatedData = cartItems.map((item) =>
-						item.id === id
-							? {
-									...item,
-									quantity: item.quantity - 1,
-								}
-							: item
-					)
-					setCartItems(updatedData)
-					setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
+		const updatedCartItems = cartItems.map((item) => {
+			if (item.id === id) {
+				return {
+					...item,
+					quantity:
+						value === 'inc'
+							? item.quantity + 1
+							: Math.max(1, item.quantity - 1),
 				}
 			}
-		}
-	}
-
-	const incQty = () => {
-		setQty((prev) => prev + 1)
-	}
-
-	const decQty = () => {
-		setQty((prev) => {
-			if (prev - 1 < 1) return 1
-			return prev - 1
+			return item
 		})
+
+		setCartItems(updatedCartItems)
+		setTotalPrice(calculateTotalPrice(updatedCartItems))
 	}
 
 	const contextValue: Context = {
 		cartItems,
 		setCartItems,
 		totalPrice,
-		setTotalPrice,
 		qty,
-		setQty,
-		incQty,
-		decQty,
 		onAdd,
 		toggleCartItemQuantity,
 		onRemove,

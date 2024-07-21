@@ -4,7 +4,7 @@ import { Card } from './ui/card'
 import { Label } from './ui/label'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 import { useEffect, useState } from 'react'
-import { SearchParams } from '@/types'
+import { SearchParams } from '@/lib/types'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 
 export function FilterSidebar() {
@@ -31,7 +31,7 @@ export function FilterSidebar() {
 	}
 
 	return (
-		<aside className="flex-col gap-4 pr-4 ">
+		<aside className="flex flex-col gap-4  ">
 			<div>
 				<p className="text-sm text-gray-400 italic">Sort by</p>
 				<Card className="w-48 p-4">

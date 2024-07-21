@@ -1,11 +1,11 @@
 import { useState, useMemo } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import SearchIcon from '@/SearchIcon'
+import { SearchIcon } from 'lucide-react'
 import { Card } from './ui/card'
 import { Checkbox } from './ui/checkbox'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
-import { Product, SearchParams } from '@/types'
+import { Product, SearchParams } from '@/lib/types'
 import { ScrollArea } from './ui/scroll-area'
 
 interface Props {

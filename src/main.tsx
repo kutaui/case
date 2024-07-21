@@ -1,8 +1,5 @@
 import { Toaster } from '@/components/ui/toaster'
-import {
-	createRouter,
-	RouterProvider
-} from '@tanstack/react-router'
+import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { CartContextProvider, QueryProvider } from './components/Providers'
@@ -17,7 +14,6 @@ declare module '@tanstack/react-router' {
 	}
 }
 
-// Render the app
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
 	const root = ReactDOM.createRoot(rootElement)

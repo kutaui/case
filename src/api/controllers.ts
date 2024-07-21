@@ -1,10 +1,10 @@
-import { Product } from '@/types'
+import { Product } from '@/lib/types'
 import { useQuery } from '@tanstack/react-query'
 
 export const GetProductsRequest = () => {
 	return fetch('https://5fc9346b2af77700165ae514.mockapi.io/products')
 		.then((response) => response.json())
-		.then((data) => data)
+		.then((data: Product[]) => data)
 }
 
 export const GetProductsQuery = () =>
@@ -16,7 +16,7 @@ export const GetProductsQuery = () =>
 export const GetProductRequest = (id: string) => {
 	return fetch(`https://5fc9346b2af77700165ae514.mockapi.io/products/${id}`)
 		.then((response) => response.json())
-		.then((data) => data)
+		.then((data: Product) => data)
 }
 
 export const GetProductQuery = (id: string) =>
