@@ -10,7 +10,7 @@ import { ScrollArea } from './ui/scroll-area'
 
 interface Props {
 	title: string
-	data: Product[]
+	data: Product[] | undefined
 }
 
 export function FilterCard(props: Props) {

@@ -65,13 +65,13 @@ function CartItem({
 				<p className="text-blue-500">{item.price}₺</p>
 			</div>
 			<div className="flex ">
-				<Button className="bg-slate-200 w-12 h-10" onClick={handleDecrease}>
+				<Button className="bg-slate-200 w-12 h-10" onClick={handleDecrease} data-testid="decrease-quantity">
 					<MinusIcon className="text-black" />
 				</Button>
 				<div className="bg-blue-500 h-10 w-12 text-center">
 					<p className="text-3xl bg-blue-500 text-white">{item.quantity}</p>
 				</div>
-				<Button className="bg-slate-200 w-12 h-10" onClick={handleIncrease}>
+				<Button className="bg-slate-200 w-12 h-10" onClick={handleIncrease} data-testid="increase-quantity">
 					<PlusIcon className="text-black" />
 				</Button>
 			</div>
